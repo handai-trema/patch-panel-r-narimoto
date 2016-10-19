@@ -1,7 +1,7 @@
 # Software patch-panel.
 class PatchPanel < Trema::Controller
   def start(_args)
-    @patch = Hash.new { |h,k| h[k]=[] }
+    @patch = Hash.new { [] }
     @m_patch = Hash.new { [] }
     logger.info 'PatchPanel started.'
   end
@@ -19,7 +19,7 @@ class PatchPanel < Trema::Controller
 
   def create_patch(dpid, port_a, port_b)
     add_flow_entries dpid, port_a, port_b
-    @patch[dpid] += [port_a, port_b].sort
+    @patch[dpid] << [port_a, port_b].sort
   end
 
   def delete_patch(dpid, port_a, port_b)
@@ -29,7 +29,7 @@ class PatchPanel < Trema::Controller
 
   def create_mirror_patch(dpid, port, mirror)
     add_flow_mirror_entries dpid, port, mirror
-    @m_patch[dpid] += [port, mirror]
+    @m_patch[dpid] << [port, mirror]
   end
 
   def delete_mirror_patch(dpid, port, mirror)
