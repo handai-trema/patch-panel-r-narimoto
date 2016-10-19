@@ -88,7 +88,7 @@ class PatchPanel < Trema::Controller
     send_flow_mod_add(dpid,
                       match: Match.new(in_port: port_src),
                       actions: [
-                          SendOutPort.new(port)),
+                          SendOutPort.new(port),
                           SendOutPort.new(mirror)
                       ])
     send_flow_mod_add(dpid,
