@@ -48,7 +48,7 @@ class PatchPanel < Trema::Controller
 
   def add_flow_entries(dpid, port_a, port_b)
     @patch[dpid].each do |ports|
-      return if ports[0] == ([port_a, port_b].sort)[0]
+      return if ports == [port_a, port_b].sort
     end
     send_flow_mod_add(dpid,
                       match: Match.new(in_port: port_a),
@@ -62,7 +62,7 @@ class PatchPanel < Trema::Controller
   def delete_flow_entries(dpid, port_a, port_b)
     is_no_entry = true
     @patch[dpid].each do |ports|
-      is_no_entry = false if ports[0] == ([port_a, port_b].sort)[0]
+      is_no_entry = false if ports == [port_a, port_b].sort
     end
     return if is_no_entry
     send_flow_mod_delete(dpid,
