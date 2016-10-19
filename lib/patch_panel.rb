@@ -91,6 +91,8 @@ class PatchPanel < Trema::Controller
       port_src = port_b if port_a == port
     end
     return false if port_src == nil
+    send_flow_mod_delete(dpid, match: Match.new(in_port: port_src))
+    send_flow_mod_delete(dpid, match: Match.new(in_port: port))
     send_flow_mod_add(dpid,
                       match: Match.new(in_port: port_src),
                       actions: [
