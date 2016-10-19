@@ -95,16 +95,18 @@ class PatchPanel < Trema::Controller
     send_flow_mod_delete(dpid, match: Match.new(in_port: port))
     send_flow_mod_add(dpid,
                       match: Match.new(in_port: port_src),
-                      actions: [
+                      actions: {
                           SendOutPort.new(port),
+                          SetDestinationMacAddress.new("00:00:00:00:00:0"+mirror.to_s),
                           SendOutPort.new(mirror),
-                      ])
+                      })
     send_flow_mod_add(dpid,
                       match: Match.new(in_port: port),
-                      actions: [
+                      actions: {
                           SendOutPort.new(port_src),
+                          SetDestinationMacAddress.new("00:00:00:00:00:0"+mirror.to_s),
                           SendOutPort.new(mirror),
-                      ])
+                      })
     return true
   end
 
