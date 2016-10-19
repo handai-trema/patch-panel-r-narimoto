@@ -38,14 +38,10 @@ class PatchPanel < Trema::Controller
   end
 
   def print_patch_mirror(dpid)
-    p "Patch list: port_a<=>port_b"
-    @patch[dpid].each do |port_a, port_b|
-      print(port_a, "<=>", port_b, "\n")
-    end
-    p "Mirror list: port=>mirror"
-    @m_patch[dpid].each do |port, mirror|
-      print(port, "=>", mirror, "\n")
-    end
+    p "Patch list:"
+    p @patch
+    p "Mirror list:"
+    p @m_patch
   end
 
   private
