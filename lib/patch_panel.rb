@@ -68,6 +68,16 @@ class PatchPanel < Trema::Controller
     return false if is_no_entry
     send_flow_mod_delete(dpid, match: Match.new(in_port: port_a))
     send_flow_mod_delete(dpid, match: Match.new(in_port: port_b))
+    del = nil
+    @m_patch[dpid].each do |ports|
+      del = ports if port_a == ports[0]
+    end
+    @m_patch[dpid].delete(del) if del
+    del = nil
+    @m_patch[dpid].each do |ports|
+      del = ports if port_b == ports[0]
+    end
+    @m_patch[dpid].delete(del) if del
     return true
   end
 
