@@ -77,9 +77,9 @@ module PatchPanelApp
     c.desc 'Location to find socket files'
     c.flag [:S, :socket_dir], default_value: Trema::DEFAULT_SOCKET_DIR
 
-    c.actin do |_global_options, options, args|
+    c.action do |_global_options, options, args|
       dpid = args[0].hex
-      Trema,trema_process('PatchPanel', options[:socket_dir]).controller.
+      Trema.trema_process('PatchPanel', options[:socket_dir]).controller.
         print_patch_mirror(dpid)
     end
   end
