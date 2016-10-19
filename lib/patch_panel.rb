@@ -27,7 +27,7 @@ class PatchPanel < Trema::Controller
     @patch[dpid] -= [port_a, port_b].sort
   end
 
-  def mirror_patch(dpid, port, mirror)
+  def create_mirror_patch(dpid, port, mirror)
     add_flow_mirror_entries dpid, port, mirror
     @m_patch[dpid] += [port, mirror]
   end
@@ -40,11 +40,11 @@ class PatchPanel < Trema::Controller
   def print_patch_mirror(dpid)
     puts "Patch list: \"port_a <=> port_b\""
     @patch[dpid].each do |port_a, port_b|
-      print(port_a + "<=>" + port_b + "\n")
+      print(port_a, "<=>", port_b, "\n")
     end
     puts "Mirror list: \"port => mirror\""
     @m_patch[dpid].each do |port, mirror|
-      print(port + "=>" + mirror + "\n")
+      print(port, "=>", mirror, "\n")
     end
   end
 
