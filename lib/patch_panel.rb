@@ -39,10 +39,9 @@ class PatchPanel < Trema::Controller
 
   def print_patch_mirror(dpid)
     p "Patch list:"
-    p @patch
+    p @patch[dpid]
     p "Mirror list:"
-    p @m_patch
-  end
+    p @m_patch[dpid]
 
   private
 
