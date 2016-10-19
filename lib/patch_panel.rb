@@ -66,12 +66,8 @@ class PatchPanel < Trema::Controller
       is_no_entry = false if ports == [port_a, port_b].sort
     end
     return false if is_no_entry
-    send_flow_mod_delete(dpid,
-                         match: Match.new(in_port: port_a),
-                         actions: SendOutPort.new(port_b))
-    send_flow_mod_delete(dpid,
-                         match: Match.new(in_port: port_b),
-                         actions: SendOutPort.new(port_a))
+    send_flow_mod_delete(dpid, match: Match.new(in_port: port_a))
+    send_flow_mod_delete(dpid, match: Match.new(in_port: port_b))
     return true
   end
 
@@ -89,13 +85,13 @@ class PatchPanel < Trema::Controller
                       match: Match.new(in_port: port_src),
                       actions: [
                           SendOutPort.new(port),
-                          SendOutPort.new(mirror)
+                          SendOutPort.new(mirror),
                       ])
     send_flow_mod_add(dpid,
                       match: Match.new(in_port: port),
                       actions: [
                           SendOutPort.new(port_src),
-                          SendOutPort.new(mirror)
+                          SendOutPort.new(mirror),
                       ])
     return true
   end
