@@ -71,7 +71,9 @@ class PatchPanel < Trema::Controller
   end
 
   def delete_flow_mirror_entries(dpid, port, mirror)
-    send_flow_mod_delete(dpid, match: Match.new(out_port: port))
+    send_flow_mod_delete(dpid,
+                         match: Match.new(out_port: port),
+                         actions: SendOutPort.new(mirror))
   end
 
 
