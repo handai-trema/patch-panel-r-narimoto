@@ -42,6 +42,7 @@ class PatchPanel < Trema::Controller
     p @patch[dpid]
     p "Mirror list:"
     p @m_patch[dpid]
+  end
 
   private
 
