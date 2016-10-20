@@ -16,7 +16,7 @@
 3. [ミラーリングの削除](#del_mirror)
 4. [バグ報告](#bug)  
 
-<a id="miror"></a>
+<a id="mirror"></a>
 ##1.ポートのミラーリング  
 下記のようにメソッドを追加した．  
 * [./lib/patch_panel.rb](https://github.com/handai-trema/patch-panel-r-narimoto/blob/master/lib/patch_panel.rb)  
@@ -204,7 +204,7 @@ $ ./bin/patch_panel print 0xabc
 ```  
 結果より，ミラーリングの生成の動作が正しく行えていること及びパッチとミラーリングのリスト表示が正しく実装できていることが確認できた．  
 
-<a id="del_miror"></a>
+<a id="del_mirror"></a>
 ##3.ミラーリングの削除  
 追加として，作成したミラーリングを削除するメソッドも実装した．  
 * [./lib/patch_panel.rb](https://github.com/handai-trema/patch-panel-r-narimoto/blob/master/lib/patch_panel.rb)  
