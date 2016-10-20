@@ -20,6 +20,7 @@
 ##1.ポートのミラーリング  
 下記のようにメソッドを追加した．  
 * [./lib/patch_panel.rb](https://github.com/handai-trema/patch-panel-r-narimoto/blob/master/lib/patch_panel.rb)  
+
 ###create_mirror_patchメソッド  
 add_flow_mirror_entriesメソッドが正しく実行された（flow_modメッセージ送信された）時にのみ，ミラーリングリストであるハッシュ@m_patchにポートのペアを格納する．
 パッチの追加では，ポートのペアをソーティングしていたが，ここではどちらがミラーポートかを判断するためにソートは行っていない．  
@@ -129,6 +130,7 @@ NXST_FLOW reply (xid=0x4):
 ##2.パッチとポートミラーリングの一覧  
 下記のようにメソッドを追加した．  
 * [./lib/patch_panel.rb](https://github.com/handai-trema/patch-panel-r-narimoto/blob/master/lib/patch_panel.rb)  
+
 ###print_patch_mirrorメソッド  
 ```ruby
 def print_patch_mirror(dpid)
@@ -208,6 +210,7 @@ $ ./bin/patch_panel print 0xabc
 ##3.ミラーリングの削除  
 追加として，作成したミラーリングを削除するメソッドも実装した．  
 * [./lib/patch_panel.rb](https://github.com/handai-trema/patch-panel-r-narimoto/blob/master/lib/patch_panel.rb)  
+
 ###delete_mirror_patchメソッド  
 ミラーリングの作成時と同様に， delete_flow_mirror_entriesメソッドが正しく実行され，戻り値としてtrueが返された時のみ，ミラーリングのハッシュを削除するように実装している．  
 ```ruby
