@@ -34,14 +34,10 @@ class PatchPanel < Trema::Controller
   end
 
   def print_patch_mirror(dpid)
-    p "Patch list: (port <=> port)"
-    @patch[dpid].each do |port_a, port_b|
-      print(port_a, " <=> ", port_b, "\n")
-    end
-    p "Mirror list: (port => mirror)"
-    @m_patch[dpid].each do |port, mirror|
-      print(port, " => ", mirror, "\n")
-    end
+    ret = Array.new()
+    ret << @patch
+    ret << @m_patch
+    return ret
   end
 
   private
@@ -95,18 +91,16 @@ class PatchPanel < Trema::Controller
     send_flow_mod_delete(dpid, match: Match.new(in_port: port))
     send_flow_mod_add(dpid,
                       match: Match.new(in_port: port_src),
-                      actions: {
+                      actions: [
                           SendOutPort.new(port),
-                          SetDestinationMacAddress.new("00:00:00:00:00:0"+mirror.to_s),
                           SendOutPort.new(mirror),
-                      })
+                      ])
     send_flow_mod_add(dpid,
                       match: Match.new(in_port: port),
-                      actions: {
+                      actions: [
                           SendOutPort.new(port_src),
-                          SetDestinationMacAddress.new("00:00:00:00:00:0"+mirror.to_s),
                           SendOutPort.new(mirror),
-                      })
+                      ])
     return true
   end
 
@@ -125,7 +119,7 @@ class PatchPanel < Trema::Controller
     send_flow_mod_delete(dpid, match: Match.new(in_port: port))
     send_flow_mod_add(dpid,
                       match: Match.new(in_port: port_src),
-                      action: SendOutPort.new(port))
+                      actions: SendOutPort.new(port))
     send_flow_mod_add(dpid,
                       match: Match.new(in_port: port),
                       actions: SendOutPort.new(port_src))
