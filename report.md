@@ -98,14 +98,12 @@ end
 ```
 $ ./bin/patch_panel create 0xabc 1 2
 $ ./bin/patch_panel m_create 0xabc 1 3
+$ ./bin/patch_panel print 0xabc
+"Patch list: (port <=> port)"
+1 <=> 2
+"Mirror list: (port => mirror)"
+1 => 3
 $ ./bin/trema send_packets --source host1 --dest host2
-$ ./bin/trema show_stats host1
-Packets sent:
-  192.168.0.1 -> 192.168.0.2 = 1 packet
-$ ./bin/trema show_stats host2
-Packets received:
-  192.168.0.1 -> 192.168.0.2 = 1 packet
-$ ./bin/trema show_stats host3
 $ ./bin/trema send_packets --source host2 --dest host1
 $ ./bin/trema show_stats host1
 Packets sent:
@@ -118,13 +116,17 @@ Packets sent:
 Packets received:
   192.168.0.1 -> 192.168.0.2 = 1 packet
 $ ./bin/trema show_stats host3
+Packets received:
+  192.168.0.1 -> 192.168.0.2 = 1 packet
+  192.168.0.2 -> 192.168.0.1 = 1 packet
 $ ./bin/trema dump_flows patch_panel
 NXST_FLOW reply (xid=0x4):
- cookie=0x0, duration=93.839s, table=0, n_packets=1, n_bytes=42, idle_age=70, priority=0,in_port=1 actions=output:2,output:3
- cookie=0x0, duration=93.843s, table=0, n_packets=1, n_bytes=42, idle_age=13, priority=0,in_port=2 actions=output:1,output:3
+ cookie=0x0, duration=62.26s, table=0, n_packets=1, n_bytes=42, idle_age=30, priority=0,in_port=1 actions=output:2,output:3
+ cookie=0x0, duration=62.267s, table=0, n_packets=1, n_bytes=42, idle_age=25, priority=0,in_port=2 actions=output:1,output:3
+
 ```  
-結果より，host3へパケットが到達していないことがわかる．しかしながら，パッチパネルのdump_flowsを確認すると，実装通りポート1とポート2からのパケットがそれぞれポート3のミラーポートへ送信する設定となっていることが確認できた．  
-これは，パケットの送信先アドレス(mac,ip)が変更されておらず，host3宛のパケットではないため，届いてはいるが受け取られていないものと考えられる．対策として，actionsの中においてパケットの宛先を変更するか，host3は自分宛てでないパケットも受信する設定にするかの２つが考えられるが，今回は実装を見送った．  
+結果より，host1からhost2宛のパケット及びその逆のパケットの双方が，相手先に加えてhost3にも送られていることが確認できた．当初，host3は自分宛てのパケットではないためパケットを破棄していた．そのため，host3だけpromiscオプションをつけている．  
+また，パッチパネルのdump_flowsを確認すると，実装通りポート1とポート2からのパケットがそれぞれポート3のミラーポートへ送信する設定となっていることが確認できた．  
 
 <a id="print"></a>
 ##2.パッチとポートミラーリングの一覧  
