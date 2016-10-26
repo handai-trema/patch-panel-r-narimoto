@@ -7,6 +7,7 @@ class PatchPanel < Trema::Controller
   end
 
   def switch_ready(dpid)
+    logger.info 'dpid = #{dpid}'
     @patch[dpid].each do |port_a, port_b|
       delete_flow_entries dpid, port_a, port_b
       add_flow_entries dpid, port_a, port_b
